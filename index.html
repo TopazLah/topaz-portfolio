@@ -6,6 +6,7 @@
     <title>Topaz Portfolio</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <header>
       <h1>Welcome to Topaz's Portfolio</h1>
@@ -17,8 +18,9 @@
     </header>
 
     <main>
+      <!-- About -->
       <section id="about">
-        <h2>About Me !</h2>
+        <h2>About Me</h2>
         <p>
           I’m a developer with a strong focus on C# and object-oriented
           programming, building clean, structured solutions. I also work with
@@ -28,75 +30,73 @@
         </p>
       </section>
 
+      <!-- Projects -->
       <section id="projects">
-        <h2>My Projects !</h2>
+        <h2>My Projects</h2>
         <div class="projects-container">
           <div class="project-card">
             <h3>Dragon Ball</h3>
-            <p>Website about Dragon Ball</p>
-            <a href="#"></a>
+            <p>A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.</p>
+            <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank">
+              <img src="assets/icons/github.svg" alt="GitHub" class="github-icon">
+              View project on GitHub
+            </a>
           </div>
+
           <div class="project-card">
-            <h3>Second Project</h3>
-            <p>Second Project Paragraph</p>
+            <h3>EmpireTracker</h3>
+            <p>A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.</p>
+            <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank">
+              <img src="assets/icons/github.svg" alt="GitHub" class="github-icon">
+              View project on GitHub
+            </a>
           </div>
           <div class="project-card">
             <h3>Third Project</h3>
             <p>Third Project Paragraph</p>
+            <a class="project-link" href="#">View project</a>
           </div>
         </div>
       </section>
 
+      <!-- Contact -->
       <section id="contact">
-        <h2>My Information !</h2>
+        <h2>My Information</h2>
         <h3>Contact Platforms</h3>
         <ul class="social-links">
           <li class="social-item">
-            <a class="social-link" href="#" aria-label="GitHub" title="GitHub">
-              <img src="assets/icons/github.svg" alt="GitHub" />
+            <a class="social-link" href="#" title="GitHub" aria-label="GitHub">
+              <img class="social-icon" src="assets/icons/github.svg" alt="GitHub" />
             </a>
           </li>
           <li class="social-item">
-            <a
-              class="social-link"
-              href="#"
-              aria-label="WhatsApp"
-              title="WhatsApp"
-            >
-              <img src="assets/icons/whatsapp.svg" alt="WhatsApp" />
+            <a class="social-link" href="#" title="WhatsApp" aria-label="WhatsApp">
+              <img class="social-icon" src="assets/icons/whatsapp.svg" alt="WhatsApp" />
             </a>
           </li>
           <li class="social-item">
-            <a
-              class="social-link"
-              href="#"
-              aria-label="Linkedin"
-              title="Linkedin"
-            >
-              <img src="assets/icons/linkedin-svgrepo-com.svg" alt="Linkedin" />
+            <a class="social-link" href="#" title="LinkedIn" aria-label="LinkedIn">
+              <img class="social-icon" src="assets/icons/linkedin-svgrepo-com.svg" alt="LinkedIn" />
             </a>
           </li>
           <li class="social-item">
-            <a
-              class="social-link"
-              href="#"
-              aria-label="Linkedin"
-              title="Linkedin"
-            >
-              <img src="assets/icons/instagram.svg" alt="Instagram" />
+            <a class="social-link" href="#" title="Instagram" aria-label="Instagram">
+              <img class="social-icon" src="assets/icons/instagram.svg" alt="Instagram" />
             </a>
           </li>
           <li class="social-item">
-            <a class="social-link" href="#" aria-label="Twitch" title="Twitch">
-              <img src="assets/icons/twitch.svg" alt="Twitch" />
+            <a class="social-link" href="#" title="Twitch" aria-label="Twitch">
+              <img class="social-icon" src="assets/icons/twitch.svg" alt="Twitch" />
             </a>
           </li>
         </ul>
       </section>
     </main>
-    <script src="script.js"></script>
+
     <footer>
       <p>© 2025 Topaz Lahmi. All rights reserved.</p>
     </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
