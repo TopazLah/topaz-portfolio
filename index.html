@@ -7,21 +7,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
-    <header>
-      <h1>Welcome to Topaz's Portfolio</h1>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+  <body class="page">
+    <header id="top" class="site-header">
+      <h1 class="site-title">Welcome to Topaz's Portfolio</h1>
+      <nav id="site-nav" class="site-nav">
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#contact">Contact</a>
       </nav>
     </header>
 
-    <main>
+    <main class="site-main">
       <!-- About -->
-      <section id="about">
-        <h2>About Me</h2>
-        <p>
+      <section id="about" class="section section--about">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-text">
           I’m a developer with a strong focus on C# and object-oriented
           programming, building clean, structured solutions. I also work with
           HTML, CSS, JavaScript, and SQL to deliver complete, responsive web
@@ -31,70 +31,71 @@
       </section>
 
       <!-- Projects -->
-      <section id="projects">
-        <h2>My Projects</h2>
-        <div class="projects-container">
+      <section id="projects" class="section section--projects">
+        <h2 class="section-title">My Projects</h2>
+        <div class="projects-container projects-grid">
           <div class="project-card">
-            <h3>Dragon Ball</h3>
-            <p>A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.</p>
+            <h3 class="project-title">Dragon Ball</h3>
+            <p class="project-desc">A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.</p>
             <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank">
-              <img src="assets/icons/github.svg" alt="GitHub" class="github-icon">
+              <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
             </a>
           </div>
 
           <div class="project-card">
-            <h3>EmpireTracker</h3>
-            <p>A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.</p>
+            <h3 class="project-title">EmpireTracker</h3>
+            <p class="project-desc">A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.</p>
             <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank">
-              <img src="assets/icons/github.svg" alt="GitHub" class="github-icon">
+              <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
             </a>
           </div>
+
           <div class="project-card">
-            <h3>Third Project</h3>
-            <p>Third Project Paragraph</p>
+            <h3 class="project-title">Third Project</h3>
+            <p class="project-desc">Third Project Paragraph</p>
             <a class="project-link" href="#">View project</a>
           </div>
         </div>
       </section>
 
       <!-- Contact -->
-      <section id="contact">
-        <h2>My Information</h2>
-        <h3>Contact Platforms</h3>
-        <ul class="social-links">
+      <section id="contact" class="section section--contact">
+        <h2 class="section-title">My Information</h2>
+        <h3 class="section-subtitle">Contact Platforms</h3>
+        <ul class="social-links social-list">
           <li class="social-item">
             <a class="social-link" href="#" title="GitHub" aria-label="GitHub">
-              <img class="social-icon" src="assets/icons/github.svg" alt="GitHub" />
+              <img class="social-icon icon" src="assets/icons/github.svg" alt="GitHub" />
             </a>
           </li>
           <li class="social-item">
             <a class="social-link" href="#" title="WhatsApp" aria-label="WhatsApp">
-              <img class="social-icon" src="assets/icons/whatsapp.svg" alt="WhatsApp" />
+              <img class="social-icon icon" src="assets/icons/whatsapp.svg" alt="WhatsApp" />
             </a>
           </li>
           <li class="social-item">
             <a class="social-link" href="#" title="LinkedIn" aria-label="LinkedIn">
-              <img class="social-icon" src="assets/icons/linkedin-svgrepo-com.svg" alt="LinkedIn" />
+              <img class="social-icon icon" src="assets/icons/linkedin-svgrepo-com.svg" alt="LinkedIn" />
             </a>
           </li>
           <li class="social-item">
             <a class="social-link" href="#" title="Instagram" aria-label="Instagram">
-              <img class="social-icon" src="assets/icons/instagram.svg" alt="Instagram" />
+              <img class="social-icon icon" src="assets/icons/instagram.svg" alt="Instagram" />
             </a>
           </li>
           <li class="social-item">
             <a class="social-link" href="#" title="Twitch" aria-label="Twitch">
-              <img class="social-icon" src="assets/icons/twitch.svg" alt="Twitch" />
+              <img class="social-icon icon" src="assets/icons/twitch.svg" alt="Twitch" />
             </a>
           </li>
         </ul>
       </section>
     </main>
 
-    <footer>
-      <p>© 2025 Topaz Lahmi. All rights reserved.</p>
+    <footer class="site-footer">
+      <p class="footer-text">© 2025 Topaz Lahmi. All rights reserved.</p>
     </footer>
 
     <script src="script.js"></script>

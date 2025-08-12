@@ -1,3 +1,4 @@
+/* Base */
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f8f8;
@@ -5,3 +6,46 @@ body {
   text-align: center;
   padding-top: 50px;
 }
+
+.page {}
+
+/* Header */
+#top {}
+.site-header {}
+.site-title {}
+#site-nav {}
+.site-nav {}
+.nav-link {}
+
+/* Main layout */
+.site-main {}
+
+/* Sections: About */
+#about {}
+.section.section--about {}
+.section-title {}
+.section-text {}
+
+/* Sections: Projects */
+#projects {}
+.section.section--projects {}
+.projects-container.projects-grid {}
+.project-card {}
+.project-title {}
+.project-desc {}
+.project-link {}
+.icon {}
+.icon--github {}
+
+/* Sections: Contact */
+#contact {}
+.section.section--contact {}
+.section-subtitle {}
+.social-links.social-list {}
+.social-item {}
+.social-link {}
+.social-icon.icon {}
+
+/* Footer */
+.site-footer {}
+.footer-text {}
