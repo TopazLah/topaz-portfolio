@@ -1,17 +1,18 @@
 "use strict";
 
-// Topaz Portfolio — Interactions (toast-only, hardened)
-// Features:
-// 1) Reveal-on-scroll (About / Project cards / Footer)
-// 2) ScrollSpy (highlight active nav link)
-// 3) Smooth scroll for nav links
-// 4) Email: copy-to-clipboard + global toast (10s) + then open mailto
+/* ==========================================================================
+   Topaz Portfolio — Interactions
+   1) Reveal-on-scroll
+   2) ScrollSpy
+   3) Smooth scroll
+   4) Email: copy + toast + mailto
+   5) GitHub Projects: fetch → cache → render
+   ========================================================================== */
 
 /* ------------------------------------
- * Global Toast helper (auto-create + inline fallback)
+ * Global Toast helper (10s default)
  * ------------------------------------ */
 function showToast(message, ms = 10000) {
-  // Ensure element exists
   let el = document.getElementById("toast");
   if (!el) {
     el = document.createElement("div");
@@ -23,11 +24,11 @@ function showToast(message, ms = 10000) {
     document.body.appendChild(el);
   }
 
-  // Minimal inline fallback styling (in case CSS isn't applied)
+  // אם אין CSS לטוסט – נותנים סטייל בסיסי inline
   const cs = window.getComputedStyle(el);
-  const cssLooksApplied =
+  const hasCss =
     cs.transitionDuration !== "0s" || cs.opacity !== "" || cs.opacity === "0";
-  if (!cssLooksApplied) {
+  if (!hasCss) {
     Object.assign(el.style, {
       position: "fixed",
       left: "50%",
@@ -49,11 +50,10 @@ function showToast(message, ms = 10000) {
     });
   }
 
-  // Show / hide
   el.textContent = message;
   clearTimeout(showToast._t);
 
-  // Prefer class toggle if CSS exists; otherwise animate inline
+  // אם יש מחלקת .toast .show ב־CSS – נשתמש בה; אחרת פולבאק inline
   if ([...document.styleSheets].length) {
     el.classList.add("show");
     showToast._t = setTimeout(() => el.classList.remove("show"), ms);
@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { threshold: 0.15 }
   );
 
-  revealTargets.forEach((el) => io.observe(el));
+  const registerReveal = (el) => io.observe(el);
+  revealTargets.forEach((el) => registerReveal(el));
 
   /* ------------------------------------
    * 2) ScrollSpy
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = Array.from(document.querySelectorAll(".nav-link"));
   const sections = navLinks
     .map((a) => document.querySelector(a.getAttribute("href")))
-    .filter(Boolean); // e.g. [#about, #projects, #contact]
+    .filter(Boolean); // [#about, #projects, #contact]
 
   const setActiveById = (id) => {
     navLinks.forEach((a) => {
@@ -118,15 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (id) setActiveById(id);
       });
     },
-    {
-      rootMargin: "-35% 0px -50% 0px",
-      threshold: 0.01,
-    }
+    { rootMargin: "-35% 0px -50% 0px", threshold: 0.01 }
   );
-
   sections.forEach((sec) => spy.observe(sec));
 
-  // Edge case: bottom of page => mark #contact as active
+  // אם ממש בתחתית – הדלק "Contact"
   const atBottom = () =>
     window.innerHeight + window.scrollY >=
     document.documentElement.scrollHeight - 2;
@@ -144,37 +141,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!href || !href.startsWith("#")) return;
       const target = document.querySelector(href);
       if (!target) return;
-
       e.preventDefault();
       setActiveById(href.slice(1));
-
-      // Smooth scroll
       target.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      // Update URL hash (no scroll jump because we've prevented default)
-      try {
-        history.pushState(null, "", href);
-      } catch (_) {
-        // no-op
-      }
+      try { history.pushState(null, "", href); } catch (_) {}
     });
   });
 
   /* ------------------------------------
-   * 4) Email: copy (then toast 10s) + open mailto
+   * 4) Email: copy + toast + mailto
    * ------------------------------------ */
   const emailLinks = document.querySelectorAll(".js-copy-email");
 
   const copyText = async (text) => {
     if (!text) return false;
-
-    // Clipboard API (secure contexts)
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
       return true;
     }
-
-    // Fallback: hidden textarea
+    // פולבאק: textarea זמני
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.setAttribute("readonly", "");
@@ -187,33 +172,179 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(ta);
     ta.select();
     let ok = false;
-    try {
-      ok = document.execCommand("copy");
-    } catch (_) {
-      ok = false;
-    }
+    try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
     document.body.removeChild(ta);
     return ok;
   };
 
   emailLinks.forEach((link) => {
     link.addEventListener("click", async (e) => {
-      e.preventDefault(); // ensure copy + toast before navigation
-
+      e.preventDefault();
       const email = link.dataset.email || "";
       const mailto = link.getAttribute("href") || `mailto:${email}`;
 
       try {
         await copyText(email);
-        showToast(`Email copied: ${email}`, 10000); // 10 seconds
+        showToast(`Email copied: ${email}`, 10000);
       } catch (_) {
         showToast(`Open your mail app to contact: ${email}`, 6000);
       }
 
-      // Trigger mailto shortly after feedback starts
-      setTimeout(() => {
-        window.location.href = mailto;
-      }, 150);
+      setTimeout(() => { window.location.href = mailto; }, 150);
     });
   });
+
+  /* ------------------------------------
+   /* ------------------------------------
+ * 5) GitHub Projects (fetch → cache → render)
+ * ------------------------------------ */
+(function loadGitHubProjects() {
+  const USER = "TopazLah"; // ודא שזה בדיוק ה־username שלך
+  const API  = `https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`;
+
+  const grid = document.getElementById("projects-grid");
+  const tpl  = document.getElementById("project-card-template");
+  if (!grid || !tpl) {
+    console.error("[Projects] Missing #projects-grid or #project-card-template");
+    showToast("Projects container not found.", 5000);
+    return;
+  }
+
+  // ניקוי שלדי טעינה
+  const cleanSkeletons = () =>
+    grid.querySelectorAll(".is-skeleton").forEach((el) => el.remove());
+
+  // קאש פשוט (30 דק’)
+  const CACHE_KEY = "gh_repos_cache_v1";
+  const now = Date.now();
+  const fromCache = (() => {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data?.time || !data?.items) return null;
+      if (now - data.time > 30 * 60 * 1000) return null;
+      return data.items;
+    } catch { return null; }
+  })();
+
+  const prettyName = (n) =>
+    n.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const timeAgo = (iso) => {
+    const d = new Date(iso);
+    const diff = Math.max(0, (Date.now() - d.getTime()) / 1000);
+    const units = [
+      ["y", 31536000],
+      ["mo", 2592000],
+      ["d", 86400],
+      ["h", 3600],
+      ["m", 60],
+    ];
+    for (const [u, s] of units) {
+      const v = Math.floor(diff / s);
+      if (v >= 1) return `${v}${u} ago`;
+    }
+    return "just now";
+  };
+
+  const makeCard = (repo) => {
+    const node = tpl.content.firstElementChild.cloneNode(true);
+
+    node.querySelector(".project-title").textContent = prettyName(repo.name);
+    node.querySelector(".project-desc").textContent =
+      repo.description || "No description provided.";
+    node.querySelector(".github-link").href = repo.html_url;
+
+    // meta
+    const meta = node.querySelector(".project-meta");
+    if (repo.language) {
+      const lang = document.createElement("span");
+      lang.className = "tag";
+      lang.textContent = repo.language;
+      meta.appendChild(lang);
+    }
+    const stars = document.createElement("span");
+    stars.className = "tag";
+    stars.textContent = `★ ${repo.stargazers_count || 0}`;
+    meta.appendChild(stars);
+
+    const upd = document.createElement("span");
+    upd.className = "tag";
+    upd.textContent = `Updated ${timeAgo(repo.updated_at)}`;
+    meta.appendChild(upd);
+
+    // קישור Live אם יש homepage תקין
+    const live = node.querySelector(".live-link");
+    if (repo.homepage && /^https?:\/\//i.test(repo.homepage)) {
+      live.href = repo.homepage;
+      live.hidden = false;
+    }
+
+    // מצב התחלתי “מוסתר” (לא חובה אם עברת למודל .reveal, אבל זה בטוח)
+    node.style.opacity = "0";
+    node.style.transform = "translateY(10px)";
+
+    return node;
+  };
+
+  const renderList = (repos) => {
+    cleanSkeletons();
+
+    const list = (repos || [])
+      .filter((r) => !r.fork && !r.archived)
+      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+      .slice(0, 9);
+
+    console.log(`[Projects] fetched=${repos?.length || 0}, rendered=${list.length}`);
+
+    grid.innerHTML = "";
+    if (!list.length) {
+      const p = document.createElement("p");
+      p.className = "section-text";
+      p.textContent = "No public repositories to show.";
+      grid.appendChild(p);
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+    list.forEach((repo) => frag.appendChild(makeCard(repo)));
+    grid.appendChild(frag);
+
+    // ✅ מבטיח שהכרטיסים לא יישארו שקופים:
+    requestAnimationFrame(() => {
+      grid.querySelectorAll(".project-card").forEach((card) => {
+        card.classList.add("is-visible"); // אם יש לך מודל .reveal — שנה ל .reveal.is-visible
+        // בנוסף ננקה inline styles כדי לתת ל-CSS לשלוט:
+        card.style.opacity = "";
+        card.style.transform = "";
+      });
+    });
+  };
+
+  // שימוש בקאש (אם יש) כדי לא להראות ריק
+  if (fromCache) {
+    renderList(fromCache);
+  }
+
+  // פנייה לרשת
+  fetch(API)
+    .then((r) => {
+      if (!r.ok) throw new Error(`GitHub API ${r.status} ${r.statusText}`);
+      return r.json();
+    })
+    .then((items) => {
+      renderList(items);
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ time: now, items }));
+      } catch {}
+    })
+    .catch((err) => {
+      console.error("[Projects] fetch error:", err);
+      if (!fromCache) {
+        cleanSkeletons();
+        showToast("Failed to load GitHub projects. See console for details.", 6000);
+      }
+    });
+})();
 });

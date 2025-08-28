@@ -273,9 +273,9 @@ body {
   gap: clamp(var(--space-4), 3vw, var(--space-6));
   width: var(--container-w);
   margin: 0 auto;
+  align-items: stretch;        /* גורם לאייטמים להימתח לגובה השורה */
 }
 
-/* כרטיס פרויקט – מצב בסיס (כולל reveal base) */
 .project-card{
   position: relative;
   background: var(--surface);
@@ -285,11 +285,15 @@ body {
   padding: clamp(var(--space-4), 2.2vw, var(--space-5));
   overflow: hidden;
 
+  /* NEW: מבנה עמודה כדי לדחוף כפתורים לתחתית */
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;           /* אפשר לשחק: 260–320px לפי הטעם */
+
   /* Reveal base */
   opacity: 0;
   transform: translateY(10px);
 
-  /* טרנזישן כללי */
   transition:
     opacity var(--dur-3) var(--ease-out),
     transform var(--dur-3) var(--ease-out),
@@ -347,17 +351,10 @@ body {
 }
 
 /* תוכן פנימי של הכרטיס */
-.project-title{
-  margin: 0 0 var(--space-2) 0;
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
-  color: var(--text);
-}
-.project-desc{
-  color: var(--text-muted);
-  margin: 0 0 var(--space-4) 0;
-  font-size: var(--fs-sm);
-}
+.project-title{ margin: 0 0 var(--space-2) 0; font-size: var(--fs-lg); font-weight: var(--fw-bold); color: var(--text); flex: 0 0 auto; }
+
+.project-desc { color: var(--text-muted); margin: 0 0 var(--space-4) 0; font-size: var(--fs-sm); flex: 0 0 auto; }
+
 
 /* כפתור לינק בעיצוב פרימיום קטן */
 .project-link{
@@ -556,6 +553,57 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+/* ---- Projects metadata & actions ---- */
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex: 0 0 auto;              /* לא לגדול אנכית מעבר לתוכן */
+}
+.tag{
+  display:inline-flex; align-items:center; gap:6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in oklab, var(--brand) 18%, var(--border) 82%);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 10%, transparent), transparent 70%), var(--surface);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.project-actions{
+  margin-top: auto;            /* הבום: דוחף לתחתית הכרטיס */
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding-top: var(--space-4);
+}
+.project-link.is-secondary{
+  color: var(--text); border-color: var(--border);
+}
+.project-link.is-secondary:hover{
+  color: var(--link-hover);
+  border-color: color-mix(in oklab, var(--brand) 36%, var(--border) 64%);
+}
+
+/* ---- Skeleton loading (optional) ---- */
+.is-skeleton{ position:relative; overflow:hidden; }
+.skeleton-box,
+.skeleton-pill{
+  display:inline-block;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  background-image: var(--skeleton);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s var(--ease-out) infinite;
+}
+.skeleton-pill{ height: 28px; min-width: 120px; border-radius: var(--radius-pill); }
+.is-skeleton .project-title{ color: transparent; }
+.is-skeleton .project-desc{ color: transparent; }
+@keyframes shimmer {
+  0% { background-position: -120% 0; }
+  100% { background-position: 220% 0; }
+}
 /* --------------------------------------------------------------------------
    4) MEDIA QUERIES (responsive, motion, print)
    -------------------------------------------------------------------------- */
@@ -685,7 +733,7 @@ body {
 .site-header::selection { background: var(--selection-bg, #eef4ff); color: var(--selection-fg, inherit); }
 
 /* Fake “noise” layer */
-.site-header::backdrop { /* not widely supported, safe to ignore */ }
+
 .site-header .grain{ display:none } /* placeholder if you ever add a div.grain */
 
 .site-header::cue { /* harmless; reserved for future */ }
@@ -722,7 +770,7 @@ body {
 }
 
 /* Nav layout */
-#site-nav{} /* reserved */
+
 .site-nav{
   display:inline-flex; align-items:center; flex-wrap:wrap;
   gap: clamp(10px, 2vw, 22px);

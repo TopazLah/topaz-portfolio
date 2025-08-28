@@ -37,40 +37,66 @@
         </div>
       </section>
 
-      <!-- Projects -->
+            <!-- Projects -->
       <section id="projects" class="section section--projects">
         <h2 class="section-title">My Projects</h2>
-        <div class="projects-container projects-grid">
-          <div class="project-card">
-            <h3 class="project-title">Dragon Ball</h3>
-            <p class="project-desc">
-              A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.
-            </p>
-            <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank" rel="noopener">
-              <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
-              View project on GitHub
-            </a>
-          </div>
 
-          <div class="project-card">
-            <h3 class="project-title">EmpireTracker</h3>
-            <p class="project-desc">
-              A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.
-            </p>
-            <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank" rel="noopener">
-              <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
-              View project on GitHub
-            </a>
-          </div>
+        <!-- הגריד שבו ה-JS מזריק כרטיסים -->
+        <div id="projects-grid" class="projects-container projects-grid" aria-live="polite">
+          <!-- שלדי טעינה (אופציונלי) -->
+          <article class="project-card is-skeleton" aria-hidden="true">
+            <h3 class="project-title skeleton-box">&nbsp;</h3>
+            <p class="project-desc skeleton-box">&nbsp;</p>
+            <div class="project-meta">
+              <span class="tag skeleton-pill">&nbsp;</span>
+              <span class="tag skeleton-pill">&nbsp;</span>
+            </div>
+            <div class="project-actions">
+              <span class="project-link skeleton-pill">&nbsp;</span>
+            </div>
+          </article>
 
-          <div class="project-card">
-            <h3 class="project-title">Third Project</h3>
-            <p class="project-desc">Third Project Paragraph</p>
-            <a class="project-link" href="#">View project</a>
-          </div>
+          <article class="project-card is-skeleton" aria-hidden="true">
+            <h3 class="project-title skeleton-box">&nbsp;</h3>
+            <p class="project-desc skeleton-box">&nbsp;</p>
+            <div class="project-meta">
+              <span class="tag skeleton-pill">&nbsp;</span>
+              <span class="tag skeleton-pill">&nbsp;</span>
+            </div>
+            <div class="project-actions">
+              <span class="project-link skeleton-pill">&nbsp;</span>
+            </div>
+          </article>
+
+          <article class="project-card is-skeleton" aria-hidden="true">
+            <h3 class="project-title skeleton-box">&nbsp;</h3>
+            <p class="project-desc skeleton-box">&nbsp;</p>
+            <div class="project-meta">
+              <span class="tag skeleton-pill">&nbsp;</span>
+              <span class="tag skeleton-pill">&nbsp;</span>
+            </div>
+            <div class="project-actions">
+              <span class="project-link skeleton-pill">&nbsp;</span>
+            </div>
+          </article>
         </div>
-      </section>
 
+        <!-- תבנית לכרטיס דינמי: ה-JS ממלא את השדות האלו -->
+        <template id="project-card-template">
+          <article class="project-card">
+            <h3 class="project-title"></h3>
+            <p class="project-desc"></p>
+            <div class="project-meta"></div>
+            <div class="project-actions">
+              <a class="project-link github-link" target="_blank" rel="noopener">
+                <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
+                View on GitHub
+              </a>
+              <a class="project-link is-secondary live-link" target="_blank" rel="noopener" hidden>Live demo</a>
+            </div>
+          </article>
+        </template>
+      </section>
       <!-- Contact -->
       <section id="contact" class="section section--contact">
         <h2 class="section-title">My Information</h2>
