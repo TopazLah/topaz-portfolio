@@ -43,7 +43,9 @@
         <div class="projects-container projects-grid">
           <div class="project-card">
             <h3 class="project-title">Dragon Ball</h3>
-            <p class="project-desc">A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.</p>
+            <p class="project-desc">
+              A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.
+            </p>
             <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank" rel="noopener">
               <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
@@ -52,7 +54,9 @@
 
           <div class="project-card">
             <h3 class="project-title">EmpireTracker</h3>
-            <p class="project-desc">A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.</p>
+            <p class="project-desc">
+              A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.
+            </p>
             <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank" rel="noopener">
               <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
@@ -71,30 +75,35 @@
       <section id="contact" class="section section--contact">
         <h2 class="section-title">My Information</h2>
         <h3 class="section-subtitle">Contact Platforms</h3>
+
         <ul class="social-links social-list">
+          <!-- GitHub -->
           <li class="social-item">
-            <a class="social-link" href="#" title="GitHub" aria-label="GitHub">
+            <a class="social-link"
+               href="https://github.com/TopazLah"
+               target="_blank" rel="noopener"
+               title="GitHub" aria-label="Open GitHub profile in a new tab">
               <img class="social-icon icon" src="assets/icons/github.svg" alt="GitHub" />
             </a>
           </li>
+
+          <!-- LinkedIn (עדכן את ה-URL אם שונה) -->
           <li class="social-item">
-            <a class="social-link" href="#" title="WhatsApp" aria-label="WhatsApp">
-              <img class="social-icon icon" src="assets/icons/whatsapp.svg" alt="WhatsApp" />
-            </a>
-          </li>
-          <li class="social-item">
-            <a class="social-link" href="#" title="LinkedIn" aria-label="LinkedIn">
+            <a class="social-link"
+               href="https://www.linkedin.com/in/topazlah-undefined-16494434a"
+               target="_blank" rel="noopener"
+               title="LinkedIn" aria-label="Open LinkedIn profile in a new tab">
               <img class="social-icon icon" src="assets/icons/linkedin-svgrepo-com.svg" alt="LinkedIn" />
             </a>
           </li>
+
+          <!-- Email (mailto + copy via JS) -->
           <li class="social-item">
-            <a class="social-link" href="#" title="Instagram" aria-label="Instagram">
-              <img class="social-icon icon" src="assets/icons/instagram.svg" alt="Instagram" />
-            </a>
-          </li>
-          <li class="social-item">
-            <a class="social-link" href="#" title="Twitch" aria-label="Twitch">
-              <img class="social-icon icon" src="assets/icons/twitch.svg" alt="Twitch" />
+            <a class="social-link js-copy-email"
+               href="mailto:topazlah@gmail.com?subject=Hello%20Topaz&body=Hi%20Topaz,%0A%0AI%20saw%20your%20portfolio%20and%20would%20like%20to%20connect."
+               data-email="topazlah@gmail.com"
+               title="Email" aria-label="Send email to Topaz">
+              <img class="social-icon icon" src="assets/icons/email-1-svgrepo-com.svg" alt="Email" />
             </a>
           </li>
         </ul>
@@ -104,6 +113,9 @@
     <footer class="site-footer is-visible">
       <p class="footer-text">© 2025 Topaz Lahmi. All rights reserved.</p>
     </footer>
+
+    <!-- Global toast (copy feedback) -->
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script src="script.js"></script>
   </body>

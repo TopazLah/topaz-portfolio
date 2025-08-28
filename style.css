@@ -138,7 +138,7 @@ body {
 .section.section--about.is-visible .about-card {
   transform: none;
   opacity: 1;
-}t
+}
 
 /* ===== PROJECTS (section layout) ===== */
 #projects {
@@ -263,10 +263,11 @@ body {
    3) COMPONENTS  (reusable building blocks used inside sections)
    -------------------------------------------------------------------------- */
 
-/* NAV links (נכניס את האנימציות/אפקטים כשנחזיר את ההדר) */
-.nav-link { /* placeholder */ }
-/* Projects — Premium grid & cards */
-.projects-container.projects-grid {
+/* ===== NAV ===== */
+.nav-link { /* placeholder – ה־Header שלך מטפל באנימציות של הניווט */ }
+
+/* ===== PROJECTS — Premium grid & cards ===== */
+.projects-container.projects-grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: clamp(var(--space-4), 3vw, var(--space-6));
@@ -274,83 +275,93 @@ body {
   margin: 0 auto;
 }
 
-/* כרטיס פרוייקט עם גבול גרדיאנט עדין + הרמה בהובר */
-.project-card {
+/* כרטיס פרויקט – מצב בסיס (כולל reveal base) */
+.project-card{
   position: relative;
   background: var(--surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-1);
   padding: clamp(var(--space-4), 2.2vw, var(--space-5));
+  overflow: hidden;
+
+  /* Reveal base */
+  opacity: 0;
+  transform: translateY(10px);
+
+  /* טרנזישן כללי */
   transition:
-    transform var(--dur-2) var(--ease-out),
+    opacity var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out),
     box-shadow var(--dur-2) var(--ease-out),
     background-color var(--dur-2) var(--ease-std);
-  overflow: hidden;
 }
 
 /* מסגרת גרדיאנט נחשפת בהובר */
-.project-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
+.project-card::before{
+  content:"";
+  position:absolute; inset:0;
+  padding:1px;
+  border-radius:inherit;
   background: var(--grad-border);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0;
+  opacity:0;
   transition: opacity var(--dur-2) var(--ease-std);
-  pointer-events: none;
+  pointer-events:none;
 }
 
 /* הילה רכה מאחור בהובר */
-.project-card::after {
-  content: "";
-  position: absolute;
-  inset: -16% -10% -22% -10%;
+.project-card::after{
+  content:"";
+  position:absolute;
+  inset:-16% -10% -22% -10%;
   background:
     radial-gradient(420px 160px at 60% 10%,
       color-mix(in oklab, var(--brand) 10%, transparent) 0%,
       transparent 70%);
   filter: blur(12px);
-  opacity: 0;
+  opacity:0;
   transition: opacity var(--dur-2) var(--ease-std);
-  pointer-events: none;
-  z-index: -1;
+  pointer-events:none;
+  z-index:-1;
 }
 
+/* Hover / Focus-within אפקטים */
 .project-card:hover,
-.project-card:focus-within {
+.project-card:focus-within{
   transform: translateY(-2px);
   box-shadow: var(--shadow-2);
   background-color: color-mix(in oklab, var(--surface) 92%, white 8%);
 }
-
 .project-card:hover::before,
-.project-card:focus-within::before { opacity: .9; }
+.project-card:focus-within::before{ opacity:.9; }
 .project-card:hover::after,
-.project-card:focus-within::after  { opacity: 1; }
+.project-card:focus-within::after { opacity:1; }
 
-.project-title {
+/* Reveal when visible (מוסף ע"י JS) */
+.project-card.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* תוכן פנימי של הכרטיס */
+.project-title{
   margin: 0 0 var(--space-2) 0;
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
   color: var(--text);
 }
-
-.project-desc {
+.project-desc{
   color: var(--text-muted);
   margin: 0 0 var(--space-4) 0;
   font-size: var(--fs-sm);
 }
 
 /* כפתור לינק בעיצוב פרימיום קטן */
-.project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
+.project-link{
+  display:inline-flex; align-items:center; gap:var(--space-2);
   padding: 10px 12px;
   border-radius: var(--radius-pill);
   border: 1px solid color-mix(in oklab, var(--brand) 24%, var(--border) 76%);
@@ -365,36 +376,28 @@ body {
     color var(--dur-2) var(--ease-std),
     border-color var(--dur-2) var(--ease-std);
 }
-
-.project-link:hover {
+.project-link:hover{
   transform: translateY(-1px);
   box-shadow: var(--shadow-2);
   color: var(--link-hover);
   border-color: color-mix(in oklab, var(--brand) 40%, var(--border) 60%);
 }
-
-.project-link:focus-visible {
+.project-link:focus-visible{
   outline: var(--ring-width) solid var(--ring-color);
   outline-offset: var(--ring-offset);
 }
 
-.icon {
-  width: var(--icon-2);
-  height: var(--icon-2);
-  flex: 0 0 auto;
+/* אייקונים כלליים */
+.icon{ width: var(--icon-2); height: var(--icon-2); flex: 0 0 auto; }
+.icon--github{ width: var(--icon-3); height: var(--icon-3); opacity: .92; }
+
+/* התאמה קלה לדארק */
+@media (prefers-color-scheme: dark){
+  .project-card{ border-color: var(--border-strong); }
 }
 
-.icon--github {
-  width: var(--icon-3);
-  height: var(--icon-3);
-  opacity: .92;
-}
-
-@media (prefers-color-scheme: dark) {
-  .project-card { border-color: var(--border-strong); }
-}
 /* ===== CONTACT — Social grid & icons (premium) ===== */
-.social-links.social-list {
+.social-links.social-list{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
   gap: clamp(var(--space-3), 2.5vw, var(--space-5));
@@ -402,15 +405,11 @@ body {
   margin: 0 auto;
   padding: var(--space-2) 0;
 }
-
-/* פריט עטיפה */
-.social-item {
-  list-style: none;
-}
+.social-item{ list-style: none; }
 
 /* כפתור אייקון עגול עם הילה עדינה */
-.social-link {
-  --size: 64px; /* אפשר להגדיל/להקטין במקום אחד */
+.social-link{
+  --size: 64px;
   display: grid;
   place-items: center;
   width: var(--size);
@@ -424,85 +423,83 @@ body {
     var(--surface);
   border: 1px solid color-mix(in oklab, var(--brand) 24%, var(--border) 76%);
   box-shadow: var(--shadow-1);
+
+  position: relative; /* לשימוש עתידי (אם תרצה תגיות/באדג'ים) */
+  overflow: hidden;
+
   transition:
     transform var(--dur-2) var(--ease-out),
     box-shadow var(--dur-2) var(--ease-out),
     background-color var(--dur-2) var(--ease-std),
     border-color var(--dur-2) var(--ease-std);
-  position: relative;
-  overflow: hidden; /* נדרש לאפקט הילה פנימית */
 }
 
 /* מסגרת גרדיאנט שמתחזקת בהובר */
-.social-link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
+.social-link::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:inherit;
+  padding:1px;
   background: var(--grad-border);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0;
+  opacity:0;
   transition: opacity var(--dur-2) var(--ease-std);
-  pointer-events: none;
+  pointer-events:none;
 }
 
 /* הילה פנימית עדינה בהובר */
-.social-link::after {
-  content: "";
-  position: absolute;
-  inset: -20%;
+.social-link::after{
+  content:"";
+  position:absolute; inset:-20%;
   background:
     radial-gradient(100px 60px at 50% 40%,
       color-mix(in oklab, var(--brand2-500) 16%, transparent),
       transparent 70%);
   filter: blur(10px);
-  opacity: 0;
+  opacity:0;
   transition: opacity var(--dur-2) var(--ease-std);
-  pointer-events: none;
+  pointer-events:none;
 }
 
 .social-link:hover,
-.social-link:focus-visible {
+.social-link:focus-visible{
   transform: translateY(-2px);
   box-shadow: var(--shadow-2);
   background-color: color-mix(in oklab, var(--surface) 92%, white 8%);
   border-color: color-mix(in oklab, var(--brand) 40%, var(--border) 60%);
 }
 .social-link:hover::before,
-.social-link:focus-visible::before { opacity: .95; }
+.social-link:focus-visible::before{ opacity:.95; }
 .social-link:hover::after,
-.social-link:focus-visible::after  { opacity: 1; }
+.social-link:focus-visible::after { opacity:1; }
 
-.social-link:focus-visible {
+.social-link:focus-visible{
   outline: var(--ring-width) solid var(--ring-color);
   outline-offset: var(--ring-offset);
 }
 
 /* האייקון עצמו */
-.social-icon.icon {
-  width: 28px;
-  height: 28px;
-  opacity: .95;
+.social-icon.icon{
+  width: 28px; height: 28px; opacity: .95;
   transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-std);
 }
 .social-link:hover .social-icon.icon,
-.social-link:focus-visible .social-icon.icon {
+.social-link:focus-visible .social-icon.icon{
   transform: scale(1.06);
   opacity: 1;
 }
 
-/* התאמות רספונסיביות קטנות */
-@media (max-width: 420px) {
-  .social-link { --size: 58px; }
-  .social-icon.icon { width: 24px; height: 24px; }
+/* רספונסיביות קטנה */
+@media (max-width: 420px){
+  .social-link{ --size: 58px; }
+  .social-icon.icon{ width: 24px; height: 24px; }
 }
 
 /* Dark polish */
 @media (prefers-color-scheme: dark){
-  .social-link {
+  .social-link{
     background:
       linear-gradient(180deg,
         color-mix(in oklab, var(--brand) 12%, transparent),
@@ -511,8 +508,9 @@ body {
     border-color: var(--border-strong);
   }
 }
-/* About — optional action button */
-.about-action {
+
+/* ===== ABOUT — optional action button ===== */
+.about-action{
   display: inline-flex; align-items: center; gap: var(--space-2);
   height: var(--control-h-md);
   padding: 0 var(--space-4);
@@ -524,18 +522,40 @@ body {
   color: var(--brand-ink, #0f1840);
   font-weight: var(--fw-semibold);
   box-shadow: var(--shadow-1);
-  transition: transform var(--dur-1) var(--ease-std), box-shadow var(--dur-2) var(--ease-std), background-color var(--dur-2) var(--ease-std);
+  transition:
+    transform var(--dur-1) var(--ease-std),
+    box-shadow var(--dur-2) var(--ease-std),
+    background-color var(--dur-2) var(--ease-std);
 }
-.about-action:hover {
+.about-action:hover{
   transform: translateY(-1px);
   box-shadow: var(--shadow-2);
 }
-.about-action:focus-visible {
+.about-action:focus-visible{
   outline: var(--ring-width) solid var(--ring-color);
   outline-offset: var(--ring-offset);
 }
 
+/* ===== REVEAL hooks for other pieces (About card & Footer text) ===== */
+/* About card – base (כבר יש עיצוב ב־Section 2, כאן רק מצבי reveal) */
+.section.section--about .about-card{
+  /* אם כבר יש לך טרנזישן/טראנספורם ב־Section 2 – אפשר להשאיר כך.
+     מוודא שגם כאן יש reveal חלק במקרה שתשנה בעתיד: */
+  transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+.section.section--about.is-visible .about-card{
+  opacity: 1;
+  transform: translateY(0);
+}
 
+/* Footer text reveal (התאמה קלה) */
+.site-footer .footer-text{
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+.site-footer.is-visible .footer-text{
+  opacity: 1;
+  transform: translateY(0);
+}
 /* --------------------------------------------------------------------------
    4) MEDIA QUERIES (responsive, motion, print)
    -------------------------------------------------------------------------- */
