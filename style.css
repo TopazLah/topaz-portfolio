@@ -1,51 +1,811 @@
-/* Base */
+/* ==========================================================================
+   STYLE.CSS — Structured Scaffold (Topaz Portfolio)
+   Load order: tokens.css -> style.css
+   Sections:
+   1) RESET + BASE
+   2) PAGE STRUCTURE (body → header → main → sections → footer)
+   3) COMPONENTS (cards, grids, buttons, icons)
+   4) MEDIA QUERIES (responsive, motion)
+   5) OVERRIDES (last, to win the cascade)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1) RESET + BASE
+   -------------------------------------------------------------------------- */
+
+/* Minimal Reset */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body, h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+img, picture, svg, video { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* Base (global defaults) */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
-  color: #333;
-  text-align: center;
-  padding-top: 50px;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: var(--lh-base);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
-.page {}
+/* Utility container (אופציונלי) */
+.container {
+  width: var(--container-w);
+  margin-inline: auto;
+}
 
-/* Header */
-#top {}
-.site-header {}
-.site-title {}
-#site-nav {}
-.site-nav {}
-.nav-link {}
+/* Typographic helpers */
+.section-title   { font-size: var(--fs-xl); font-weight: var(--fw-black); letter-spacing: .2px; }
+.section-subtitle{ font-size: var(--fs-md); font-weight: var(--fw-bold);  color: var(--text-muted); }
+.section-text    { font-size: var(--fs-md); color: var(--text); }
 
-/* Main layout */
-.site-main {}
+/* Spacing scale utilities (optional quick helpers) */
+.mt-4 { margin-top: var(--space-4) !important; }
+.mt-5 { margin-top: var(--space-5) !important; }
+.pt-6 { padding-top: var(--space-6) !important; }
+.text-center { text-align: center !important; }
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
 
-/* Sections: About */
-#about {}
-.section.section--about {}
-.section-title {}
-.section-text {}
 
-/* Sections: Projects */
-#projects {}
-.section.section--projects {}
-.projects-container.projects-grid {}
-.project-card {}
-.project-title {}
-.project-desc {}
-.project-link {}
-.icon {}
-.icon--github {}
+/* --------------------------------------------------------------------------
+   2) PAGE STRUCTURE  (order-of-appearance: body → header → main → sections → footer)
+   -------------------------------------------------------------------------- */
 
-/* Sections: Contact */
-#contact {}
-.section.section--contact {}
-.section-subtitle {}
-.social-links.social-list {}
-.social-item {}
-.social-link {}
-.social-icon.icon {}
+/* ===== HEADER ===== */
+#top { scroll-margin-top: 110px; }
 
-/* Footer */
-.site-footer {}
-.footer-text {}
+
+/* ===== SECTIONS ===== */
+
+
+/* ===== MAIN (refine) ===== */
+.site-main {
+  display: grid;
+  gap: clamp(var(--space-6), 4vw, var(--space-8));
+  padding: clamp(var(--space-5), 4vw, var(--space-8)) 0 var(--space-8);
+}
+
+/* ===== ABOUT (section layout) ===== */
+#about {
+  position: relative;
+  isolation: isolate; /* כדי שהאפקטים לא יזלגו החוצה */
+  padding: 0; /* ננהל ריווח בתוך .section--about */
+}
+
+/* שכבת רקע רכה עם הילת מותג */
+.section.section--about {
+  padding-inline: 0; /* נשתמש בקונטיינר פנימי */
+  background:
+    radial-gradient(700px 220px at 15% -60px, color-mix(in oklab, var(--brand) 10%, transparent) 0%, transparent 65%),
+    radial-gradient(700px 220px at 85% -60px, color-mix(in oklab, var(--brand2-500) 10%, transparent) 0%, transparent 65%);
+}
+
+/* קונטיינר פנימי ממורכז */
+.section.section--about .container {
+  width: var(--container-narrow, min(760px, 92vw));
+  margin-inline: auto;
+  padding: clamp(var(--space-6), 4vw, var(--space-8)) var(--space-4);
+}
+
+/* “כרטיס” התוכן של ה‑About */
+.section.section--about .about-card {
+  background: var(--surface);
+  border: var(--border-1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: clamp(var(--space-5), 3vw, var(--space-6));
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+/* פס קישוט דק בצד שמאל (מותג) */
+.section.section--about .about-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--grad-brand);
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  opacity: .85;
+}
+
+/* כותרת וטקסט */
+.section.section--about .section-title {
+  margin: 0 0 var(--space-3) 0;
+  background: var(--grad-brand);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.section.section--about .section-text {
+  color: var(--text);
+  opacity: .95;
+}
+
+/* אנימציית כניסה — נראות כברירת מחדל */
+.section.section--about .about-card {
+  transform: none;
+  opacity: 1;
+  transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+/* אם תרצה להפעיל בעתיד עם JS, תשאיר את הכלל הבא */
+.section.section--about.is-visible .about-card {
+  transform: none;
+  opacity: 1;
+}t
+
+/* ===== PROJECTS (section layout) ===== */
+#projects {
+  position: relative;
+  isolation: isolate;
+  scroll-margin-top: 110px; /* עוגן נוח בגלילה מהניווט */
+}
+
+/* רקע רך מאחורי הכותרת/הגריד */
+.section.section--projects {
+  padding-inline: var(--space-4);
+  background:
+    radial-gradient(900px 240px at 50% -80px,
+      color-mix(in oklab, var(--brand) 8%, transparent) 0%,
+      transparent 70%);
+}
+
+/* כותרת בפרזנטציה יפה */
+.section.section--projects .section-title {
+  margin: 0 auto var(--space-4);
+  text-align: center;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ===== CONTACT (section layout) ===== */
+#contact {
+  position: relative;
+  isolation: isolate;
+  scroll-margin-top: 110px;
+}
+
+.section.section--contact {
+  padding-inline: var(--space-4);
+  /* רקע רך מאחורי הסקשן */
+  background:
+    radial-gradient(900px 240px at 50% -60px,
+      color-mix(in oklab, var(--brand2-500) 8%, transparent) 0%,
+      transparent 70%);
+}
+
+/* כותרות */
+.section.section--contact .section-title {
+  margin: 0 auto var(--space-2);
+  text-align: center;
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section.section--contact .section-subtitle {
+  margin: 0 auto var(--space-4);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ===== FOOTER — Final Polish ===== */
+.site-footer {
+  padding: clamp(var(--space-5), 3vw, var(--space-7)) var(--space-4);
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--surface) 95%, var(--brand) 5%),
+      var(--surface-2));
+  border-top: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  isolation: isolate;
+}
+
+/* קו עליון זוהר עדין */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--grad-brand);
+  opacity: .35;
+}
+
+/* טקסט — קריא וברור */
+.footer-text {
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  letter-spacing: 0.15px;
+
+  /* ברירת מחדל (תואם לאור) */
+  color: var(--text-muted);
+  opacity: .95;
+}
+
+/* בדארק — ניגודיות גבוהה יותר */
+@media (prefers-color-scheme: dark){
+  .footer-text {
+    color: var(--text-on-dark);      /* קריא ובהיר */
+    opacity: .92;                    /* מעט “רך”, בלי אפוריות */
+    text-shadow: 0 1px 0 rgba(0,0,0,.18); /* חדות קלה נגד הרקע */
+  }
+}
+
+/* אנימציה (אם הוספת is-visible ב-HTML) */
+.footer-text {
+  transform: translateY(0);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+  letter-spacing: 0.25px;
+  
+}
+.site-footer:not(.is-visible) .footer-text {
+  opacity: 1;            /* שלא ייעלם אם אין JS */
+  transform: none;
+}
+.site-footer.is-visible .footer-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* --------------------------------------------------------------------------
+   3) COMPONENTS  (reusable building blocks used inside sections)
+   -------------------------------------------------------------------------- */
+
+/* NAV links (נכניס את האנימציות/אפקטים כשנחזיר את ההדר) */
+.nav-link { /* placeholder */ }
+/* Projects — Premium grid & cards */
+.projects-container.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(var(--space-4), 3vw, var(--space-6));
+  width: var(--container-w);
+  margin: 0 auto;
+}
+
+/* כרטיס פרוייקט עם גבול גרדיאנט עדין + הרמה בהובר */
+.project-card {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+  padding: clamp(var(--space-4), 2.2vw, var(--space-5));
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-std);
+  overflow: hidden;
+}
+
+/* מסגרת גרדיאנט נחשפת בהובר */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--grad-border);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-std);
+  pointer-events: none;
+}
+
+/* הילה רכה מאחור בהובר */
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: -16% -10% -22% -10%;
+  background:
+    radial-gradient(420px 160px at 60% 10%,
+      color-mix(in oklab, var(--brand) 10%, transparent) 0%,
+      transparent 70%);
+  filter: blur(12px);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-std);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  background-color: color-mix(in oklab, var(--surface) 92%, white 8%);
+}
+
+.project-card:hover::before,
+.project-card:focus-within::before { opacity: .9; }
+.project-card:hover::after,
+.project-card:focus-within::after  { opacity: 1; }
+
+.project-title {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+}
+
+.project-desc {
+  color: var(--text-muted);
+  margin: 0 0 var(--space-4) 0;
+  font-size: var(--fs-sm);
+}
+
+/* כפתור לינק בעיצוב פרימיום קטן */
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in oklab, var(--brand) 24%, var(--border) 76%);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--brand) 12%, transparent), transparent 70%),
+    var(--surface);
+  color: var(--brand);
+  font-weight: var(--fw-semibold);
+  transition:
+    transform var(--dur-1) var(--ease-std),
+    box-shadow var(--dur-2) var(--ease-std),
+    color var(--dur-2) var(--ease-std),
+    border-color var(--dur-2) var(--ease-std);
+}
+
+.project-link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+  color: var(--link-hover);
+  border-color: color-mix(in oklab, var(--brand) 40%, var(--border) 60%);
+}
+
+.project-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+}
+
+.icon {
+  width: var(--icon-2);
+  height: var(--icon-2);
+  flex: 0 0 auto;
+}
+
+.icon--github {
+  width: var(--icon-3);
+  height: var(--icon-3);
+  opacity: .92;
+}
+
+@media (prefers-color-scheme: dark) {
+  .project-card { border-color: var(--border-strong); }
+}
+/* ===== CONTACT — Social grid & icons (premium) ===== */
+.social-links.social-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: clamp(var(--space-3), 2.5vw, var(--space-5));
+  width: min(680px, 92vw);
+  margin: 0 auto;
+  padding: var(--space-2) 0;
+}
+
+/* פריט עטיפה */
+.social-item {
+  list-style: none;
+}
+
+/* כפתור אייקון עגול עם הילה עדינה */
+.social-link {
+  --size: 64px; /* אפשר להגדיל/להקטין במקום אחד */
+  display: grid;
+  place-items: center;
+  width: var(--size);
+  height: var(--size);
+  margin: 0 auto;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--brand) 10%, transparent),
+      transparent 70%),
+    var(--surface);
+  border: 1px solid color-mix(in oklab, var(--brand) 24%, var(--border) 76%);
+  box-shadow: var(--shadow-1);
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-std),
+    border-color var(--dur-2) var(--ease-std);
+  position: relative;
+  overflow: hidden; /* נדרש לאפקט הילה פנימית */
+}
+
+/* מסגרת גרדיאנט שמתחזקת בהובר */
+.social-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad-border);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-std);
+  pointer-events: none;
+}
+
+/* הילה פנימית עדינה בהובר */
+.social-link::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(100px 60px at 50% 40%,
+      color-mix(in oklab, var(--brand2-500) 16%, transparent),
+      transparent 70%);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-std);
+  pointer-events: none;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  background-color: color-mix(in oklab, var(--surface) 92%, white 8%);
+  border-color: color-mix(in oklab, var(--brand) 40%, var(--border) 60%);
+}
+.social-link:hover::before,
+.social-link:focus-visible::before { opacity: .95; }
+.social-link:hover::after,
+.social-link:focus-visible::after  { opacity: 1; }
+
+.social-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+}
+
+/* האייקון עצמו */
+.social-icon.icon {
+  width: 28px;
+  height: 28px;
+  opacity: .95;
+  transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-std);
+}
+.social-link:hover .social-icon.icon,
+.social-link:focus-visible .social-icon.icon {
+  transform: scale(1.06);
+  opacity: 1;
+}
+
+/* התאמות רספונסיביות קטנות */
+@media (max-width: 420px) {
+  .social-link { --size: 58px; }
+  .social-icon.icon { width: 24px; height: 24px; }
+}
+
+/* Dark polish */
+@media (prefers-color-scheme: dark){
+  .social-link {
+    background:
+      linear-gradient(180deg,
+        color-mix(in oklab, var(--brand) 12%, transparent),
+        transparent 70%),
+      var(--surface);
+    border-color: var(--border-strong);
+  }
+}
+/* About — optional action button */
+.about-action {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  height: var(--control-h-md);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in oklab, var(--brand) 25%, var(--border) 75%);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--brand) 16%, transparent), transparent 70%),
+    var(--surface);
+  color: var(--brand-ink, #0f1840);
+  font-weight: var(--fw-semibold);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--dur-1) var(--ease-std), box-shadow var(--dur-2) var(--ease-std), background-color var(--dur-2) var(--ease-std);
+}
+.about-action:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+.about-action:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+}
+
+
+/* --------------------------------------------------------------------------
+   4) MEDIA QUERIES (responsive, motion, print)
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px){
+  .site-main { gap: var(--space-6); }
+  .project-card { padding: var(--space-4); }
+  .nav-link { padding: 8px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print{
+  body { background: #fff; color: #000; }
+  .project-card { box-shadow: none; border: 1px solid #ddd; }
+}
+
+
+/* --------------------------------------------------------------------------
+   5) OVERRIDES (LAST WINS)
+   כאן נרשום התאמות נקודתיות או עיצובים שצריכים לגבור על הכל
+   -------------------------------------------------------------------------- */
+/* === HEADER — ULTRA PREMIUM (הדבק כאן את ה-Header המטורף שלך) === */
+/* ===============================
+   HEADER — ULTRA PREMIUM
+   no HTML changes required
+   =============================== */
+
+/* ===== Keyframes & helpers ===== */
+@keyframes borderShift {
+  0%   { --angle: 0deg; }
+  50%  { --angle: 180deg; }
+  100% { --angle: 360deg; }
+}
+@keyframes haloDrift {
+  0%   { background-position: 0% 0%, 100% 0%; }
+  50%  { background-position: 100% 10%, 0% 15%; }
+  100% { background-position: 0% 0%, 100% 0%; }
+}
+@keyframes shimmer {
+  0%   { background-position: -120% 0; }
+  100% { background-position: 220% 0; }
+}
+@keyframes grain {
+  0% { transform: translate(0,0); }
+  25%{ transform: translate(-2%,1%); }
+  50%{ transform: translate(1%,-1%); }
+  75%{ transform: translate(-1%,2%); }
+  100%{ transform: translate(0,0); }
+}
+
+/* ===== Header container ===== */
+.site-header{
+  /* layout */
+  position: sticky; top: 14px; z-index: var(--z-header, 1000);
+  width: var(--container-w, min(1100px, 94vw));
+  margin-inline: auto;
+  padding: 18px clamp(18px, 3vw, 28px);
+
+  /* glass */
+  background: var(--glass-bg, rgba(255,255,255,.72));
+  -webkit-backdrop-filter: var(--backdrop-blur, blur(14px) saturate(130%));
+  backdrop-filter: var(--backdrop-blur, blur(14px) saturate(130%));
+  border-radius: var(--glass-radius, 18px);
+  box-shadow: var(--glass-shadow, 0 18px 40px rgba(17,24,39,.12), 0 2px 6px rgba(17,24,39,.06));
+
+  /* grid */
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+
+  /* so pseudo-elements stay inside */
+  isolation: isolate;
+  overflow: hidden; /* clip halos/noise to the header radius */
+}
+
+/* Wide screens: title left, nav right */
+@media (min-width: 720px){
+  .site-header{
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    justify-items: stretch;
+    gap: 14px;
+  }
+}
+
+/* Gradient border that subtly moves */
+.site-header::before{
+  content:"";
+  position:absolute; inset:0;
+  padding: 1.5px;
+  border-radius: inherit;
+  --angle: 0deg;
+  background: conic-gradient(from var(--angle),
+              color-mix(in oklab, var(--brand, #3b82f6) 90%, white 10%),
+              color-mix(in oklab, var(--brand2-500, #0ea5e9) 90%, white 10%),
+              color-mix(in oklab, var(--brand, #3b82f6) 90%, white 10%));
+  animation: borderShift 9s linear infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Ambient halo + soft gradient background layers */
+.site-header::after{
+  content:"";
+  position:absolute;
+  inset:-80px -20px -110px -20px;
+  z-index:-1;
+  background:
+    radial-gradient(650px 200px at 15% -40px, color-mix(in oklab, var(--brand, #3b82f6) 22%, transparent) 0%, transparent 60%),
+    radial-gradient(650px 200px at 85% -30px, color-mix(in oklab, var(--brand2-500, #0ea5e9) 18%, transparent) 0%, transparent 60%);
+  filter: blur(10px);
+  animation: haloDrift 18s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Subtle film grain for texture */
+.site-header .__noise{
+  /* no HTML elem needed: we “create” it with CSS on the container */
+}
+.site-header::marker{ display:none; } /* quiet any markers in some browsers */
+.site-header > * { position: relative; z-index: 1; }
+.site-header::selection { background: var(--selection-bg, #eef4ff); color: var(--selection-fg, inherit); }
+
+/* Fake “noise” layer */
+.site-header::backdrop { /* not widely supported, safe to ignore */ }
+.site-header .grain{ display:none } /* placeholder if you ever add a div.grain */
+
+.site-header::cue { /* harmless; reserved for future */ }
+
+/* Title: gradient text + live shimmer line */
+.site-title{
+  margin: 0;
+  line-height: var(--lh-tight, 1.2);
+  font-weight: var(--fw-black, 900);
+  letter-spacing: .2px;
+  font-size: var(--fs-2xl, clamp(1.8rem, 1.2rem + 2vw, 2.6rem));
+  background: var(--grad-brand, linear-gradient(90deg,#3b82f6,#0ea5e9));
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Shimmer “specular highlight” across the title */
+.site-title::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(110deg,
+      transparent 0%,
+      rgba(255,255,255,.70) 10%,
+      rgba(255,255,255,.0) 20%,
+      transparent 60%);
+  mix-blend-mode: screen;
+  background-size: 220% 100%;
+  animation: shimmer 3.6s var(--ease-out, cubic-bezier(.2,.8,.2,1)) infinite;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Nav layout */
+#site-nav{} /* reserved */
+.site-nav{
+  display:inline-flex; align-items:center; flex-wrap:wrap;
+  gap: clamp(10px, 2vw, 22px);
+  margin:0; padding:0;
+  justify-content:center;
+}
+
+/* Links: magnetic underline + soft glow + 3D micro tilt */
+.nav-link{
+  position:relative;
+  display:inline-block;
+  padding: 10px 14px;
+  font-weight: var(--fw-bold, 700);
+  color: var(--text, #111827);
+  border-radius: var(--radius-md, 12px);
+  transition:
+    color var(--dur-2, 200ms) var(--ease-std, cubic-bezier(.2,.7,.3,1)),
+    background-color var(--dur-2, 200ms) var(--ease-std, cubic-bezier(.2,.7,.3,1)),
+    box-shadow var(--dur-2, 200ms) var(--ease-std, cubic-bezier(.2,.7,.3,1)),
+    transform var(--dur-1, 120ms) var(--ease-std, cubic-bezier(.2,.7,.3,1));
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Underline that grows from center */
+.nav-link::after{
+  content:"";
+  position:absolute; left:50%; bottom:6px;
+  transform: translateX(-50%);
+  width:0%; height:2px; border-radius:2px;
+  background: var(--grad-brand, linear-gradient(90deg,#3b82f6,#0ea5e9));
+  transition: width var(--dur-2, 200ms) var(--ease-std, cubic-bezier(.2,.7,.3,1));
+}
+
+/* Glow halo behind link on hover */
+.nav-link::before{
+  content:"";
+  position:absolute; inset:-14px -10px;
+  background: radial-gradient(160px 40px at 50% 60%,
+              color-mix(in oklab, var(--brand, #3b82f6) 18%, transparent),
+              transparent 70%);
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity var(--dur-2, 200ms) var(--ease-std, cubic-bezier(.2,.7,.3,1));
+  pointer-events:none;
+  z-index:-1;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible{
+  color: color-mix(in oklab, var(--text, #111827) 65%, var(--brand, #3b82f6) 35%);
+  background-color: color-mix(in oklab, transparent 70%, var(--brand, #3b82f6) 30%);
+  box-shadow: var(--hover-elev, 0 10px 22px rgba(59,130,246,.16));
+  transform: translateY(-1px) perspective(600px) rotateX(0.7deg);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after{ width: 80%; }
+.nav-link:hover::before,
+.nav-link:focus-visible::before{ opacity: 1; }
+
+/* Active/current state (optional .is-active) */
+.nav-link.is-active{
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklab, var(--brand, #3b82f6) 16%, transparent),
+      color-mix(in oklab, var(--brand2-500, #0ea5e9) 12%, transparent));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brand, #3b82f6) 24%, transparent);
+  color: color-mix(in oklab, var(--text, #111827) 70%, var(--brand, #3b82f6) 30%);
+}
+.nav-link.is-active::after{ width: 92%; }
+
+/* Accessibility ring */
+.nav-link:focus-visible{
+  outline: var(--ring-width, 2px) solid var(--ring-color, rgba(59,130,246,.45));
+  outline-offset: var(--ring-offset, 3px);
+}
+
+/* Mobile tweaks */
+@media (max-width: 420px){
+  .nav-link{ padding: 8px 10px; }
+}
+
+/* Respect user's motion prefs */
+@media (prefers-reduced-motion: reduce){
+  .site-title::after,
+  .site-header::before,
+  .site-header::after,
+  .nav-link,
+  .nav-link::after,
+  .nav-link::before{
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Dark polish */
+@media (prefers-color-scheme: dark){
+  .nav-link{ color: var(--text, #e5e7eb); }
+  .nav-link:hover,
+  .nav-link:focus-visible{
+    background-color: color-mix(in oklab, transparent 60%, var(--brand, #3b82f6) 40%);
+    box-shadow: 0 10px 22px rgba(59,130,246,.28);
+    color: color-mix(in oklab, var(--text, #e5e7eb) 75%, var(--brand, #3b82f6) 25%);
+  }
+}
+/* הדבק כאן את הבלוק האחרון שנתתי לך ל-Header (ULTRA PREMIUM) */

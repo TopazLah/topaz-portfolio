@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Topaz Portfolio</title>
+    <link rel="stylesheet" href="tokens.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body class="page">
+  <body>
     <header id="top" class="site-header">
       <h1 class="site-title">Welcome to Topaz's Portfolio</h1>
       <nav id="site-nav" class="site-nav">
@@ -20,14 +21,20 @@
     <main class="site-main">
       <!-- About -->
       <section id="about" class="section section--about">
-        <h2 class="section-title">About Me</h2>
-        <p class="section-text">
-          I’m a developer with a strong focus on C# and object-oriented
-          programming, building clean, structured solutions. I also work with
-          HTML, CSS, JavaScript, and SQL to deliver complete, responsive web
-          experiences. I enjoy combining logical thinking with thoughtful design
-          to turn ideas into functional, user-friendly interfaces.
-        </p>
+        <div class="container">
+          <div class="about-card">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-text">
+              I’m a developer with a strong focus on C# and object-oriented
+              programming, building clean, structured solutions. I also work with
+              HTML, CSS, JavaScript, and SQL to deliver complete, responsive web
+              experiences. I enjoy combining logical thinking with thoughtful design
+              to turn ideas into functional, user-friendly interfaces.
+            </p>
+            <!-- Optional action -->
+            <!-- <a href="#projects" class="about-action">Explore Projects</a> -->
+          </div>
+        </div>
       </section>
 
       <!-- Projects -->
@@ -37,7 +44,7 @@
           <div class="project-card">
             <h3 class="project-title">Dragon Ball</h3>
             <p class="project-desc">A fan-made website dedicated to the Dragon Ball universe, featuring characters, story arcs, and trivia for fans to explore.</p>
-            <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank">
+            <a class="project-link" href="https://github.com/TopazLah/dragonballproject/" target="_blank" rel="noopener">
               <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
             </a>
@@ -46,7 +53,7 @@
           <div class="project-card">
             <h3 class="project-title">EmpireTracker</h3>
             <p class="project-desc">A C# project that collects, analyzes, and monitors online roulette results in real-time. Includes modules for data crawling, betting analysis, and alert notifications.</p>
-            <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank">
+            <a class="project-link" href="https://github.com/TopazLah/EmpireTracker" target="_blank" rel="noopener">
               <img src="assets/icons/github.svg" alt="GitHub" class="icon icon--github">
               View project on GitHub
             </a>
@@ -94,7 +101,7 @@
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer is-visible">
       <p class="footer-text">© 2025 Topaz Lahmi. All rights reserved.</p>
     </footer>
 
